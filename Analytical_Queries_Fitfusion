@@ -1,0 +1,36 @@
+Queries to Clean and Aggregate the Data
+
+Query 1: Handle Missing Values
+
+UPDATE Members
+SET Age = 0
+WHERE Age IS NULL;
+
+UPDATE Classes
+SET Capacity = 0
+WHERE Capacity IS NULL;
+
+Query 2: Remove Duplicates
+WITH DuplicateMembers AS (
+  SELECT MemberID, Name, Email, PhoneNumber, Address, Age, Gender, Occupation, JoinDate, MembershipType,
+  ROW_NUMBER() OVER (PARTITION BY MemberID ORDER BY MemberID) AS RowNumber
+  FROM Members
+)
+DELETE FROM DuplicateMembers
+WHERE RowNumber > 1;
+
+Query 3: Aggregate Attendance Data
+SELECT 
+  M.MemberID,
+  M.Name,
+  COUNT(A.AttendanceID) AS TotalAttendance,
+  SUM(CASE WHEN A.AttendanceStatus = 'Attended' THEN 1 ELSE 0 END) AS TotalAttended,
+  SUM(CASE WHEN A.AttendanceStatus = 'Missed' THEN 1 ELSE 0 END) AS TotalMissed,
+  CAST(SUM(CASE WHEN A.AttendanceStatus = 'Attended' THEN 1 ELSE 0 END) AS DECIMAL(10, 2)) / COUNT(A.AttendanceID) * 100 AS AttendancePercentage
+FROM 
+  Members M
+  INNER JOIN Attendance A ON M.MemberID = A.MemberID
+GROUP BY 
+  M.MemberID, M.Name
+ORDER BY 
+  TotalAttendance DESC;

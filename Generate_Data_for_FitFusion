@@ -1,0 +1,105 @@
+CREATE TABLE Members (
+  MemberID INT PRIMARY KEY,
+  Name VARCHAR(255) NOT NULL,
+  Email VARCHAR(255) NOT NULL,
+  PhoneNumber VARCHAR(20) NOT NULL,
+  Address VARCHAR(255) NOT NULL,
+  Age INT,
+  Gender VARCHAR(10) NOT NULL,
+  Occupation VARCHAR(50) NOT NULL,
+  JoinDate DATE NOT NULL,
+  MembershipType VARCHAR(20) NOT NULL
+);
+
+CREATE TABLE Classes (
+  ClassID INT PRIMARY KEY,
+  ClassType VARCHAR(20) NOT NULL,
+  ClassName VARCHAR(50) NOT NULL,
+  Description VARCHAR(255) NOT NULL,
+  Capacity INT,
+  InstructorID INT,
+  ScheduleID INT
+);
+
+CREATE TABLE Instructors (
+  InstructorID INT PRIMARY KEY,
+  Name VARCHAR(255) NOT NULL,
+  Email VARCHAR(255) NOT NULL,
+  PhoneNumber VARCHAR(20) NOT NULL,
+  Certifications VARCHAR(50) NOT NULL,
+  Experience INT NOT NULL
+);
+
+CREATE TABLE Schedules (
+  ScheduleID INT PRIMARY KEY,
+  ClassID INT,
+  Date DATE NOT NULL,
+  Time TIME NOT NULL,
+  Duration INT NOT NULL
+);
+
+CREATE TABLE Attendance (
+  AttendanceID INT PRIMARY KEY,
+  MemberID INT,
+  ClassID INT,
+  AttendanceDate DATE NOT NULL,
+  AttendanceStatus VARCHAR(10) NOT NULL
+);
+
+CREATE TABLE Financials (
+  FinancialID INT PRIMARY KEY,
+  Date DATE NOT NULL,
+  Revenue DECIMAL(10, 2) NOT NULL,
+  Costs DECIMAL(10, 2) NOT NULL,
+  ProfitMargin DECIMAL(5, 2) NOT NULL
+);
+
+CREATE TABLE Payments (
+  PaymentID INT PRIMARY KEY,
+  MemberID INT,
+  PaymentDate DATE NOT NULL,
+  PaymentAmount DECIMAL(10, 2) NOT NULL,
+  PaymentMethod VARCHAR(20) NOT NULL
+);
+
+INSERT INTO Members (MemberID, Name, Email, PhoneNumber, Address, Age, Gender, Occupation, JoinDate, MembershipType)
+VALUES
+(1, 'John Doe', 'johndoe@example.com', '123-456-7890', '123 Main St', 30, 'Male', 'Software Engineer', '2022-01-01', 'Monthly'),
+(2, 'Jane Smith', 'janesmith@example.com', '987-654-3210', '456 Elm St', 25, 'Female', 'Marketing Manager', '2022-02-01', 'Annual'),
+(3, 'Bob Johnson', 'bobjohnson@example.com', '555-123-4567', '789 Oak St', 40, 'Male', 'Sales Representative', '2022-03-01', 'Monthly');
+
+INSERT INTO Classes (ClassID, ClassType, ClassName, Description, Capacity, InstructorID, ScheduleID)
+VALUES
+(1, 'Yoga', 'Hatha Yoga', 'A beginner''s yoga class', 20, 1, 1),
+(2, 'Pilates', 'Mat Pilates', 'A core-strengthening Pilates class', 15, 2, 2),
+(3, 'Spinning', 'Indoor Cycling', 'A high-intensity spinning class', 25, 3, 3);
+
+INSERT INTO Instructors (InstructorID, Name, Email, PhoneNumber, Certifications, Experience)
+VALUES
+(1, 'Sarah Lee', 'sarahlee@example.com', '111-222-3333', 'Yoga Certification', 5),
+(2, 'Michael Brown', 'michaelbrown@example.com', '444-555-6666', 'Pilates Certification', 3),
+(3, 'Emily Chen', 'emilychen@example.com', '777-888-9999', 'Spinning Certification', 2);
+
+INSERT INTO Schedules (ScheduleID, ClassID, Date, Time, Duration)
+VALUES
+(1, 1, '2022-01-01', '09:00:00', 60),
+(2, 2, '2022-01-02', '10:00:00', 60),
+(3, 3, '2022-01-03', '11:00:00', 60);
+
+INSERT INTO Attendance (AttendanceID, MemberID, ClassID, AttendanceDate, AttendanceStatus)
+VALUES
+(1, 1, 1, '2022-01-01', 'Attended'),
+(2, 2, 2, '2022-01-02', 'Attended'),
+(3, 3, 3, '2022-01-03', 'Missed');
+
+INSERT INTO Financials (FinancialID, Date, Revenue, Costs, ProfitMargin)
+VALUES
+(1, '2022-01-01', 1000.00, 500.00, 50.00),
+(2, '2022-01-02', 1200.00, 600.00, 50.00),
+(3, '2022-01-03', 1500.00, 750.00, 50.00);
+
+INSERT INTO Payments (PaymentID, MemberID, PaymentDate, PaymentAmount, PaymentMethod)
+VALUES
+(1, 1, '2022-01-01', 100.00, 'Credit Card'),
+(2, 2, '2022-02-01', 200.00, 'Cash'),
+(3, 3, '2022-03-01', 150.00, 'Check');
